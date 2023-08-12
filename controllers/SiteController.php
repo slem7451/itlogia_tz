@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\models\CompleteLessonToUser;
+use app\models\Lesson;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -61,7 +63,34 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        if (Yii::$app->user->isGuest) {
+            $this->redirect(['login']);
+        }
+
+        $lessons = Lesson::findAllLessons();
+        $completedLessons = CompleteLessonToUser::findCompleteLessonsForUser();
+
+        return $this->render('index', [
+            'lessons' => $lessons,
+            'completedLessons' => $completedLessons
+        ]);
+    }
+
+    public function actionLesson($id)
+    {
+        if (Yii::$app->user->isGuest) {
+            $this->redirect(['login']);
+        }
+
+        $lesson = Lesson::findLessonById($id);
+
+        if (Yii::$app->request->post('isComplete') && Yii::$app->request->isAjax && is_null($lesson->user)) {
+            CompleteLessonToUser::completeLessonForUser($id);
+        }
+
+        return $this->render('lesson', [
+            'lesson' => $lesson
+        ]);
     }
 
     /**

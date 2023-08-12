@@ -86,3 +86,22 @@ a.desc:after {
 .form-group {
     margin-bottom: 1rem;
 }
+
+.lesson {
+    margin-bottom: 10px;
+}
+
+.not-completed {
+    color: black;
+}
+
+.completed {
+    color: green;
+}
+
+.completed::before {
+    content: "✓";
+    font-size: 16px;
+    margin-right: 5px;
+    display: inline-block;
+}
