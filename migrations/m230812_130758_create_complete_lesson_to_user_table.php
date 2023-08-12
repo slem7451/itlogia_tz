@@ -18,6 +18,12 @@ class m230812_130758_create_complete_lesson_to_user_table extends Migration
         ]);
 
         $this->addPrimaryKey('complete_lesson_to_user', '{{%complete_lesson_to_user}}', ['user_id', 'lesson_id']);
+        $this->addForeignKey(
+            'complete_lesson_to_user-to-lesson-fk',
+            '{{%complete_lesson_to_user}}',
+            ['lesson_id'],
+            '{{%lesson}}',
+            ['id']);
     }
 
     /**
